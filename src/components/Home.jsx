@@ -45,38 +45,39 @@ const Home = () => {
       </div>
 
       <div className="mt-8 ms-5">
-        <h2 className="text-white text-3xl font-light">Trending Coins</h2>
-        <div className="flex flex-wrap gap-4 mt-4">
+        <h2 className="text-white text-3xl font-light mt-9"></h2>
+        <div className="flex flex-wrap gap-4 mt-4 justify-center">
           {/* Loop through coins to display the boxes */}
           {coins.map((coin) => (
             <div
               key={coin.id}
-              className="w-[250px] h-[250px] bg-white flex items-center justify-center shadow-lg rounded-md"
+              className="w-[250px] h-[250px] bg-white flex items-center justify-center shadow-lg rounded-md mb-4"
             >
               <div className="w-[250px] h-[250px] bg-white flex flex-col items-center justify-center text-center border rounded-md shadow-lg">
-  <img src={coin.image} alt={coin.name} className="w-16 h-16 mb-2" />
-  <h3 className="text-xl font-bold">{coin.name}</h3>
-  <p className="text-gray-500">{coin.symbol}</p>
-  <p className="text-gray-500">${coin.total_volume.toLocaleString()}</p>
-</div>
-
+                <img src={coin.image} alt={coin.name} className="w-16 h-16 mb-2" />
+                <h3 className="text-xl font-bold">{coin.name}</h3>
+                <p className="text-gray-500">{coin.symbol}</p>
+                <p className="text-green-500">${coin.total_volume.toLocaleString()}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="text-white mt-11 ms-5 text-left">
+      <div className="text-white mt-11 ms-[100px] text-left">
         <h1 className="text-3xl font-light">Today's Cryptocurrency Prices by Market Cap</h1>
         <p className="text-gray-300 ms-1">
           The global crypto market cap is <span className="text-green-400">$3.43T</span>, a <span className="text-green-400">0.57%</span> increase over the last day.
         </p>
       </div>
 
+      {/* Coin list table section */}
       <div className="mt-5 px-4">
         {loading ? (
           <p className="text-center text-white">Loading data...</p>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="max-w-[1325px] mx-auto">
+            
             <table className="table-auto w-full text-left border-collapse border border-gray-700 text-white">
               <thead>
                 <tr className="bg-blue-800">
@@ -103,8 +104,8 @@ const Home = () => {
                     <td
                       className={`px-4 py-2 border-b ${
                         coin.price_change_percentage_24h > 0
-                          ? "text-green-500" // Green if positive
-                          : "text-red-500"    // Red if negative
+                          ? "text-green-500"
+                          : "text-red-500"
                       }`}
                     >
                       {coin.price_change_percentage_24h?.toFixed(2)}%
