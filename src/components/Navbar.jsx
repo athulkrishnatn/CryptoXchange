@@ -31,12 +31,13 @@ const Navbar = () => {
             <option className="text-black" value="EUR">EUR</option>
             <option className="text-black" value="INR">INR</option>
           </select>
-          <button className="bg-white text-blue-800 px-4 py-1 rounded">
+          <button className="bg-white text-blue-800 px-2 py-1 rounded">
             Login
           </button>
+          <i className="fa-solid fa-right-to-bracket me-4"></i>
+
         </div>
-        <div className="mx-1 mt-1 text-white me-10">
-          <i className="fa-solid fa-right-to-bracket"></i>
+        <div className="mx-1 mt-1 text-white me-12">
         </div>
       </div>
 
