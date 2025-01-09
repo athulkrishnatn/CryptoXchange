@@ -1,14 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { getCoinListings } from "../Api";
+import { getCoinListings } from "../Api"; // REST API function to get initial coin data
 
 const Home = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const connectWebSocket = () => {
+    const socket = new WebSocket("wss://stream.binance.com:9443/ws/!miniTicker@arr");
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      setCoins((prevCoins) => {
+        return prevCoins.map((coin) => {
+          const matchingCoin = data.find(
+            (item) => item.s === `${coin.symbol.toUpperCase()}USDT`
+          );
+          if (matchingCoin) {
+            return { ...coin, current_price: parseFloat(matchingCoin.c) };
+          }
+          return coin;
+        });
+      });
+    };
+
+    socket.onclose = () => {
+      console.warn("WebSocket closed. Reconnecting...");
+      setTimeout(connectWebSocket, 5000); // Retry after 5 seconds
+    };
+
+    return socket;
+  };
+
   useEffect(() => {
     const fetchCoins = async () => {
       try {
-        const coinData = await getCoinListings();
+        const coinData = await getCoinListings(); // Fetch initial coin data
         setCoins(coinData);
       } catch (error) {
         console.error("Error fetching coins:", error);
@@ -16,15 +43,25 @@ const Home = () => {
         setLoading(false);
       }
     };
+
     fetchCoins();
+
+    const socket = connectWebSocket();
+
+    // Cleanup WebSocket on component unmount
+    return () => socket.close();
   }, []);
 
   return (
     <div className="bg-gradient-to-r from-black to-blue-900 min-h-screen">
-      <div className="container mx-auto pt-[150px] text-center">
-        <h1 className="text-[65px] font-extrabold leading-[80px] text-white">
-          Pioneering the Evolution of <br /> Blockchain Markets
+      <div className="container mx-auto pt-[150px] text-center bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
+        <h1 className="text-[65px] font-extrabold leading-[80px] text-white  bg-clip-text text-transparent">
+         <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent"> Pioneering the Evolution of</span > <br />
+          <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
+            Blockchain Markets
+          </span>
         </h1>
+
         <p className="pt-3 text-xl text-gray-300">
           Join the CryptoXchange community today and unlock a world of possibilities in blockchain trading. <br />
           Sign up now to experience secure, seamless, and innovative crypto transactions!
@@ -45,39 +82,42 @@ const Home = () => {
       </div>
 
       <div className="mt-8 ms-5">
-        <h2 className="text-white text-3xl font-light mt-9"></h2>
         <div className="flex flex-wrap gap-4 mt-4 justify-center">
-          {/* Loop through coins to display the boxes */}
-          {coins.map((coin) => (
-            <div
-              key={coin.id}
-              className="w-[250px] h-[250px] bg-white flex items-center justify-center shadow-lg rounded-md mb-4"
-            >
-              <div className="w-[250px] h-[250px] bg-white flex flex-col items-center justify-center text-center border rounded-md shadow-lg">
+          {loading ? (
+            <p className="text-center text-white">Loading data...</p>
+          ) : (
+            coins.map((coin) => (
+              <div
+                key={coin.id}
+                className="w-[250px] h-[250px] bg-white flex flex-col items-center justify-center text-center border rounded-md shadow-lg mb-4"
+              >
                 <img src={coin.image} alt={coin.name} className="w-16 h-16 mb-2" />
                 <h3 className="text-xl font-bold">{coin.name}</h3>
-                <p className="text-gray-500">{coin.symbol}</p>
-                <p className="text-green-500">${coin.total_volume.toLocaleString()}</p>
+                <p className="text-gray-500">{coin.symbol.toUpperCase()}</p>
+                <p className="text-green-500">
+                  ${coin.current_price?.toLocaleString() || "N/A"}
+                </p>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
       <div className="text-white mt-11 ms-[100px] text-left">
-        <h1 className="text-3xl font-light">Today's Cryptocurrency Prices by Market Cap</h1>
+        <h1 className="text-3xl font-light">
+          Today's Cryptocurrency Prices by Market Cap
+        </h1>
         <p className="text-gray-300 ms-1">
-          The global crypto market cap is <span className="text-green-400">$3.43T</span>, a <span className="text-green-400">0.57%</span> increase over the last day.
+          The global crypto market cap is <span className="text-green-400">$3.43T</span>, a{" "}
+          <span className="text-green-400">0.57%</span> increase over the last day.
         </p>
       </div>
 
-      {/* Coin list table section */}
       <div className="mt-5 px-4">
         {loading ? (
           <p className="text-center text-white">Loading data...</p>
         ) : (
           <div className="max-w-[1325px] mx-auto">
-            
             <table className="table-auto w-full text-left border-collapse border border-gray-700 text-white">
               <thead>
                 <tr className="bg-blue-800">
@@ -98,9 +138,15 @@ const Home = () => {
                       <img src={coin.image} alt={coin.name} className="w-6 h-6 mr-2" />
                       {coin.name} ({coin.symbol.toUpperCase()})
                     </td>
-                    <td className="px-4 py-2 border-b">${coin.current_price.toFixed(2)}</td>
-                    <td className="px-4 py-2 border-b">${coin.total_volume.toLocaleString()}</td>
-                    <td className="px-4 py-2 border-b">{coin.circulating_supply.toLocaleString()}</td>
+                    <td className="px-4 py-2 border-b">
+                      ${coin.current_price?.toFixed(2) || "N/A"}
+                    </td>
+                    <td className="px-4 py-2 border-b">
+                      ${coin.total_volume?.toLocaleString() || "N/A"}
+                    </td>
+                    <td className="px-4 py-2 border-b">
+                      {coin.circulating_supply?.toLocaleString() || "N/A"}
+                    </td>
                     <td
                       className={`px-4 py-2 border-b ${
                         coin.price_change_percentage_24h > 0
@@ -108,10 +154,11 @@ const Home = () => {
                           : "text-red-500"
                       }`}
                     >
-                      {coin.price_change_percentage_24h?.toFixed(2)}%
+                      {coin.price_change_percentage_24h?.toFixed(2) || "N/A"}%
                     </td>
-
-                    <td className="px-4 py-2 border-b">${coin.market_cap.toLocaleString()}</td>
+                    <td className="px-4 py-2 border-b">
+                      ${coin.market_cap?.toLocaleString() || "N/A"}
+                    </td>
                   </tr>
                 ))}
               </tbody>

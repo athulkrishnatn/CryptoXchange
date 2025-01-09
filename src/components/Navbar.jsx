@@ -2,7 +2,7 @@ import React from 'react';
 
 const Navbar = () => {
   return (
-    <div className="bg-gradient-to-r from-black to-blue-800 fixed w-full z-10">
+    <div className="bg-gradient-to-r from-black to-blue-900 fixed w-full z-10">
       <div className="flex items-center justify-between px-6 pt-1">
         {/* Logo with Icon */}
         <div className="logo flex items-center text-xl font-semibold ps-6 text-white">
