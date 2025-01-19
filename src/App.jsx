@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import TrendingCoins from "./components/TrendingCoins";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -9,6 +10,7 @@ const App = () => {
       <Navbar />
       <Home />
       <TrendingCoins /> {/* Add this component */}
+      <Footer/>
     </div>
   );
 };

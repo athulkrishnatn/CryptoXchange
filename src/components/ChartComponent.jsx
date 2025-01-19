@@ -34,8 +34,14 @@ const ChartComponent = () => {
   }, []);
 
   return (
-    <div className="chart-container  ">
-      <h2 className="text-xl font-bold mb-4">Crypto Price Trends</h2>
+    <div className="chart-container">
+      {/* Heading */}
+      <h2 className="text-2xl font-bold mb-4">Top 10 Cryptocurrencies by Market Cap</h2>
+      <p className="text-lg mb-6">
+        The chart below displays the current prices of the top 10 cryptocurrencies based on market cap. Track their trends and performance in real time.
+      </p>
+
+      {/* Chart */}
       <LineChart
         width={800}
         height={400}
