@@ -11,7 +11,7 @@ const Footer = () => {
             CryptoXchange is your gateway to the world of cryptocurrencies. Trade your favorite digital assets in a secure and efficient environment. 
             Whether you're a seasoned investor or just getting started, we offer an intuitive platform to make trading simple and enjoyable.
           </p>
-          <p className="text-sm">
+          <p className="text-sm text-gray-500">
             Stay ahead in the crypto market with real-time data, market insights, and secure transactions. 
             Join us today and start trading with confidence.
           </p>
@@ -24,8 +24,6 @@ const Footer = () => {
             <li><a href="#pricing" className="hover:text-cyan-400">Pricing</a></li>
             <li><a href="#faq" className="hover:text-cyan-400">FAQ</a></li>
             <li><a href="#about" className="hover:text-cyan-400">About Us</a></li>
-            <li><a href="#careers" className="hover:text-cyan-400">Careers</a></li>
-            <li><a href="#contact" className="hover:text-cyan-400">Contact</a></li>
           </ul>
         </div>
 

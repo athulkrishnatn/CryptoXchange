@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import { getCoinListings } from "../Api"; // REST API function to get initial coin data
 
@@ -53,22 +54,31 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-black to-blue-900 min-h-screen">
-      <div className="container mx-auto pt-[150px] text-center bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
-        <h1 className="text-[65px] font-extrabold leading-[80px] text-white  bg-clip-text text-transparent">
-         <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent"> Pioneering the Evolution of</span > <br />
-          <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
-            Blockchain Markets
-          </span>
-        </h1>
+    <div className="bg-gradient-to-r from-black to-blue-900 min-h-screen flex flex-col">
+      <div className="container mx-auto flex flex-col items-center pt-[150px]">
+        {/* Left Section - Hero Banner */}
+        <div className="text-center bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-[65px] font-extrabold leading-[80px] text-white">
+            <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
+              Pioneering the Evolution of
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-blue-50 to-blue-500 bg-clip-text text-transparent">
+              Blockchain Markets
+            </span>
+          </h1>
+          <p className="pt-3 text-xl text-gray-400">
+            Join the CryptoXchange community today and unlock a world of possibilities in blockchain trading. <br />
+            Sign up now to experience secure, seamless, and innovative crypto transactions!
+          </p>
+        </div>
 
-        <p className="pt-3 text-xl text-gray-300">
-          Join the CryptoXchange community today and unlock a world of possibilities in blockchain trading. <br />
-          Sign up now to experience secure, seamless, and innovative crypto transactions!
-        </p>
+        {/* Right Section - Placeholder or other content */}
+        
       </div>
 
-      <div className="flex justify-center mt-8">
+      {/* Search Section */}
+      <div className="flex justify-center mt-16 mb-8">
         <div className="flex">
           <input
             type="text"
@@ -81,7 +91,8 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-8 ms-5">
+      {/* Coins Section */}
+      <div className="mt-8">
         <div className="flex flex-wrap gap-4 mt-4 justify-center">
           {loading ? (
             <p className="text-center text-white">Loading data...</p>
@@ -101,70 +112,6 @@ const Home = () => {
             ))
           )}
         </div>
-      </div>
-
-      <div className="text-white mt-11 ms-[100px] text-left">
-        <h1 className="text-3xl font-light">
-          Today's Cryptocurrency Prices by Market Cap
-        </h1>
-        <p className="text-gray-300 ms-1">
-          The global crypto market cap is <span className="text-green-400">$3.43T</span>, a{" "}
-          <span className="text-green-400">0.57%</span> increase over the last day.
-        </p>
-      </div>
-
-      <div className="mt-5 px-4">
-        {loading ? (
-          <p className="text-center text-white">Loading data...</p>
-        ) : (
-          <div className="max-w-[1325px] mx-auto">
-            <table className="table-auto w-full text-left border-collapse border border-gray-700 text-white">
-              <thead>
-                <tr className="bg-blue-800">
-                  <th className="px-4 py-2 border border-gray-600">#</th>
-                  <th className="px-4 py-2 border border-gray-600">Coin</th>
-                  <th className="px-4 py-2 border border-gray-600">Price</th>
-                  <th className="px-4 py-2 border border-gray-600">Volume</th>
-                  <th className="px-4 py-2 border border-gray-600">Circulating Supply</th>
-                  <th className="px-4 py-2 border border-gray-600">24H Change</th>
-                  <th className="px-4 py-2 border border-gray-600">Market Cap</th>
-                </tr>
-              </thead>
-              <tbody>
-                {coins.map((coin, index) => (
-                  <tr key={coin.id}>
-                    <td className="px-4 py-2 border-b">{index + 1}</td>
-                    <td className="px-4 py-2 border-b flex items-center">
-                      <img src={coin.image} alt={coin.name} className="w-6 h-6 mr-2" />
-                      {coin.name} ({coin.symbol.toUpperCase()})
-                    </td>
-                    <td className="px-4 py-2 border-b">
-                      ${coin.current_price?.toFixed(2) || "N/A"}
-                    </td>
-                    <td className="px-4 py-2 border-b">
-                      ${coin.total_volume?.toLocaleString() || "N/A"}
-                    </td>
-                    <td className="px-4 py-2 border-b">
-                      {coin.circulating_supply?.toLocaleString() || "N/A"}
-                    </td>
-                    <td
-                      className={`px-4 py-2 border-b ${
-                        coin.price_change_percentage_24h > 0
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {coin.price_change_percentage_24h?.toFixed(2) || "N/A"}%
-                    </td>
-                    <td className="px-4 py-2 border-b">
-                      ${coin.market_cap?.toLocaleString() || "N/A"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );
