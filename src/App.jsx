@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import TrendingCoins from "./components/TrendingCoins";
 import Footer from "./components/Footer";
-import NFT from "./pages/NFT";
+
 
 const App = () => {
   return (
